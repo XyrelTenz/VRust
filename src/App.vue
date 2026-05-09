@@ -48,7 +48,6 @@ function toggleDropdown() {
   }
 }
 
-// Basic interaction commands (placeholders for now)
 async function sendKey(key: string) {
   try {
     await invoke("send_key", { key });
@@ -59,20 +58,19 @@ async function sendKey(key: string) {
 
 const isMouseDown = ref(false);
 
-async function handleMouse(e: MouseEvent, type: 'down' | 'up' | 'move') {
-  if (type === 'move' && !isMouseDown.value) return;
-  if (type === 'down') isMouseDown.value = true;
-  if (type === 'up') isMouseDown.value = false;
+async function handleMouse(e: MouseEvent, type: "down" | "up" | "move") {
+  if (type === "move" && !isMouseDown.value) return;
+  if (type === "down") isMouseDown.value = true;
+  if (type === "up") isMouseDown.value = false;
 
   const target = e.currentTarget as HTMLElement;
   const rect = target.getBoundingClientRect();
-  
-  // Calculate relative X,Y (0-450, 0-800)
+
   const x = Math.round(((e.clientX - rect.left) / rect.width) * 450);
   const y = Math.round(((e.clientY - rect.top) / rect.height) * 800);
-  
+
   const buttons = isMouseDown.value ? 1 : 0;
-  
+
   try {
     await invoke("send_mouse_event", { x, y, buttons });
   } catch (err) {
@@ -82,7 +80,7 @@ async function handleMouse(e: MouseEvent, type: 'down' | 'up' | 'move') {
 
 onMounted(() => {
   fetchAvds();
-  
+
   listen<{ data: string }>("emulator-frame", (event) => {
     currentFrame.value = `data:image/png;base64,${event.payload.data}`;
     isEmulatorRunning.value = true;
@@ -94,7 +92,6 @@ onMounted(() => {
   <div
     class="h-screen flex flex-col bg-transparent select-none overflow-hidden rounded-xl border border-white/10 shadow-2xl"
   >
-    <!-- Custom Title Bar -->
     <div
       data-tauri-drag-region
       class="h-11 flex items-center justify-between px-4 bg-[#1a1b26]/95 backdrop-blur-2xl border-b border-white/5 z-[60]"
@@ -153,7 +150,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Dropdown Menu -->
     <Transition name="fade">
       <div v-if="showDropdown" class="absolute top-11 left-2 right-2 z-[70]">
         <div
@@ -243,11 +239,8 @@ onMounted(() => {
       </div>
     </Transition>
 
-    <!-- Main Content Area -->
     <div class="flex-1 flex flex-col bg-[#0d0e14] relative overflow-hidden">
-      <!-- Emulator View -->
       <div v-if="isEmulatorRunning" class="flex-1 flex flex-col relative">
-        <!-- Action Toolbar (Fixed at Top) -->
         <div
           class="h-12 bg-[#1a1b26]/80 backdrop-blur-md flex items-center justify-center space-x-6 border-b border-white/5 z-20"
         >
@@ -330,8 +323,6 @@ onMounted(() => {
             </svg>
           </button>
         </div>
-
-        <!-- Emulator Screen Container -->
         <div
           class="flex-1 relative group bg-black overflow-hidden cursor-crosshair"
           @mousedown="handleMouse($event, 'down')"
@@ -358,8 +349,6 @@ onMounted(() => {
             class="w-full h-full object-contain pointer-events-none"
             draggable="false"
           />
-
-          <!-- Live Overlay -->
           <div
             class="absolute bottom-4 left-4 flex items-center space-x-2 px-2 py-1 bg-black/40 backdrop-blur-md rounded border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
           >
@@ -373,8 +362,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-
-      <!-- Landing Page -->
       <div
         v-else
         class="flex-1 flex flex-col items-center justify-center text-center p-8 bg-[#0a0b10]"

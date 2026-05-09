@@ -46,6 +46,7 @@ async fn get_avds() -> Result<Vec<Avd>, String> {
     Ok(avds)
 }
 
+//TODO: Make emulator touch events more responsive by using a more direct connection method instead of going through gRPC for every event. Maybe use a shared memory approach or a lightweight IPC mechanism to send input events directly to the emulator process, bypassing the overhead of gRPC for low-latency interactions.
 #[tauri::command]
 async fn launch_emulator<R: Runtime>(
     app: tauri::AppHandle<R>,
@@ -97,8 +98,6 @@ async fn launch_emulator<R: Runtime>(
         match emulator.connect(Some(Duration::from_secs(60)), true).await {
             Ok(mut client) => {
                 println!("Connected to gRPC. Waiting for boot...");
-                // Store the client in app state or a global if needed for interactions
-                // For now we just stream
                 let _ = client
                     .wait_until_booted(Duration::from_secs(300), None)
                     .await;
@@ -153,7 +152,7 @@ async fn send_mouse_event(x: i32, y: i32, buttons: i32) -> Result<(), String> {
             .and_then(|s| s.parse().ok())
             .unwrap_or(3120);
 
-        // Map from 450x800 (our requested stream size) to physical size
+        // Map from 450x800 to physical size
         let scaled_x = (x * lcd_w) / 450;
         let scaled_y = (y * lcd_h) / 800;
 
@@ -177,7 +176,7 @@ async fn send_mouse_event(x: i32, y: i32, buttons: i32) -> Result<(), String> {
 async fn send_key(key: String) -> Result<(), String> {
     use android_emulator::proto::KeyboardEvent;
 
-    // We need to find the running emulator and connect to it
+    // Running Emulator
     let emulators = android_emulator::list_emulators()
         .await
         .map_err(|e| e.to_string())?;
