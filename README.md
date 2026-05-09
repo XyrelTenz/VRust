@@ -46,9 +46,3 @@ bun run tauri build
 
 The application uses the default Android SDK configuration. Ensure your AVDs are correctly set up in Android Studio or via the command line before launching them through Vrust.
 
-## Technical Details
-
-- Frontend: Vue 3 with TypeScript and Tailwind CSS.
-- Backend: Rust with Tauri framework.
-- Communication: gRPC for emulator interaction and screen streaming.
-- Window Management: Frameless, transparent window design for a premium feel.
