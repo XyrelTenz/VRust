@@ -6,7 +6,6 @@ Vrust is a high-performance, minimalist Android emulator runner and manager buil
 
 - Headless Emulator Execution: Launch Android Virtual Devices without the default bulky emulator window.
 - Real-time Streaming: High-performance screen streaming using gRPC protocol for low-latency feedback.
-- Interactive Touch Control: Direct interaction with the emulator screen using mouse-to-touch coordinate mapping.
 - System Navigation: Dedicated controls for Home, Back, Recent Apps, and Power functions.
 - Boot Management: Support for multiple launch modes including Normal Boot, Cold Start, and Wipe Data.
 - Automatic Device Detection: Automatically lists all available Android Virtual Devices (AVDs) configured on the system.
@@ -14,35 +13,8 @@ Vrust is a high-performance, minimalist Android emulator runner and manager buil
 - Desktop Notifications: Visual feedback for emulator boot status and connectivity.
 - Modern UI: Sleek, dark-themed interface built with Vue 3 and Tailwind CSS.
 
-## Prerequisites
+## Current Status
 
-Before setting up the project, ensure you have the following installed:
+Vrust is currently in active development. While it successfully streams the emulator environment, the interaction is currently limited to read-only mode. Touch events have not yet been implemented, so the emulator is not yet responsive to direct manipulation (such as opening apps or navigating settings) like a standard mobile device.
 
-- Android SDK: The emulator command must be available in your system PATH.
-- Rust and Cargo: Required for building the Tauri backend.
-- Node.js: Required for the frontend development environment.
-- Bun: The recommended package manager for this project.
-
-## Setup Instructions
-
-Follow these steps to get the application running on your local machine:
-
-1. Clone the repository
-Get the source code from the repository.
-
-2. Install dependencies
-Run the following command in the project root to install all required frontend and backend dependencies:
-bun install
-
-3. Run in development mode
-To start the application in development mode with hot-reloading:
-bun run tauri dev
-
-4. Build for production
-To create a production-ready executable for your platform:
-bun run tauri build
-
-## Configuration
-
-The application uses the default Android SDK configuration. Ensure your AVDs are correctly set up in Android Studio or via the command line before launching them through Vrust.
 
